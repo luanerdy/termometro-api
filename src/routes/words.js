@@ -4,18 +4,26 @@ const getWords = (app) => {
   const words = JSON.parse(readFileSync('src/sortedTermoWords.json').toString());
 
   app.get('/words', (req, res) => {
-    const { first, second, third, fourth, fifth, maybes, nones } = req.query;
+    const { first, second, third, fourth, fifth, firstNones, secondNones, thirdNones, fourthNones, fifthNones, maybes, nones } = req.query;
     const positions = [first, second, third, fourth, fifth];
+    const positionNones = [firstNones, secondNones, thirdNones, fourthNones, fifthNones];
     let newWords = words;
     newWords = nones ? filterNones(newWords, nones) : newWords;
     newWords = maybes ? filterMaybes(newWords, maybes) : newWords;
     newWords = filterPositions(newWords, positions);
+    newWords = filterPositionNones(newWords, positionNones);
     res.send({words: newWords});
   });
 
   const filterNones = (words, nones) => {
     return words.filter(word => {
       return word.split('').every(letter => !nones.includes(letter.normalize('NFD').replace(/[\u0300-\u036f]/g, "")));
+    })
+  };
+
+  const filterPositionNones = (words, positionNones) => {
+    return words.filter(word => {
+      return word.split('').every((letter, index) => !positionNones[index].split('').includes(letter.normalize('NFD').replace(/[\u0300-\u036f]/g, "")));
     })
   };
 
