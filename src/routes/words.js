@@ -6,12 +6,13 @@ const getWords = (app) => {
   app.get('/words', (req, res) => {
     const { first, second, third, fourth, fifth, firstNones, secondNones, thirdNones, fourthNones, fifthNones, maybes, nones } = req.query;
     const positions = [first, second, third, fourth, fifth];
-    const positionNones = [firstNones, secondNones, thirdNones, fourthNones, fifthNones];
+    const positionNones = [firstNones || '', secondNones || '', thirdNones || '', fourthNones || '', fifthNones || ''];
     let newWords = words;
     newWords = nones ? filterNones(newWords, nones) : newWords;
     newWords = maybes ? filterMaybes(newWords, maybes) : newWords;
     newWords = filterPositions(newWords, positions);
     newWords = filterPositionNones(newWords, positionNones);
+    console.log({ first, second, third, fourth, fifth, firstNones, secondNones, thirdNones, fourthNones, fifthNones, maybes, nones });
     res.send({words: newWords});
   });
 
