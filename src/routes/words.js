@@ -4,8 +4,10 @@ const getWords = (app) => {
   const words = JSON.parse(readFileSync('src/sortedTermoWords.json').toString());
 
   app.get('/words', (req, res) => {
-    const { first, second, third, fourth, fifth, firstNones, secondNones, thirdNones, fourthNones, fifthNones, maybes, nones } = req.query;
+    const { first, second, third, fourth, fifth, firstNones, secondNones, thirdNones, fourthNones, fifthNones, nones } = req.query;
+    let maybes = req.query.maybes;
     const positions = [first, second, third, fourth, fifth];
+    maybes += `${first || ''}${second || ''}${third || ''}${fourth || ''}${fifth || ''}`
     const positionNones = [firstNones || '', secondNones || '', thirdNones || '', fourthNones || '', fifthNones || ''];
     let newWords = words;
     newWords = nones ? filterNones(newWords, nones) : newWords;
