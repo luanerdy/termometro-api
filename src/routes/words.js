@@ -5,7 +5,7 @@ const getWords = (app) => {
 
   app.get('/words', (req, res) => {
     const { first, second, third, fourth, fifth, firstNones, secondNones, thirdNones, fourthNones, fifthNones, nones } = req.query;
-    let maybes = req.query.maybes;
+    let maybes = req.query.maybes || '';
     const positions = [first, second, third, fourth, fifth];
     maybes += `${first || ''}${second || ''}${third || ''}${fourth || ''}${fifth || ''}`
     const positionNones = [firstNones || '', secondNones || '', thirdNones || '', fourthNones || '', fifthNones || ''];
